@@ -1,0 +1,2 @@
+-importmodel poll2.all -exportmodel poll2.sta,tra,lab,srew
+-importmodel poll2.all -exportmodel poll2.sta,tra,lab,srew -ex

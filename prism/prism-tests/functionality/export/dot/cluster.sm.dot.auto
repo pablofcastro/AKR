@@ -1,0 +1,2 @@
+-exporttransdot cluster.sm.dot -ex
+-exporttransdotstates cluster.sm.sta.dot -ex

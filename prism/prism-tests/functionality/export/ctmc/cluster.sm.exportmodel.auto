@@ -1,0 +1,35 @@
+# Reduce precision for some tests due to minor differences between the engines
+
+# Export all model info in different formats
+
+-exportmodel cluster.sm.all:actions=false
+-exportmodel cluster.sm.matlab.all:matlab,actions=false
+-exportmodel cluster.sm.rows.all:rows,actions=false
+
+# Export model info separately (for a few formats)
+
+-exportmodel cluster.sm.tra:actions=false
+-exportmodel cluster.sm.lab
+-exportmodel cluster.sm.sta
+-exportmodel cluster.sm.srew
+-exportmodel cluster.sm.trew
+
+# Export model info - explicit engine
+
+-exportmodel cluster.sm.all:actions=false -ex
+
+-exportmodel cluster.sm.tra:actions=false -ex
+-exportmodel cluster.sm.sta -ex
+-exportmodel cluster.sm.lab -ex
+-exportmodel cluster.sm.srew -ex
+-exportmodel cluster.sm.trew -ex
+
+# Export model info - exact
+
+-exportmodel cluster.sm.exact.all -exact
+
+-exportmodel cluster.sm.exact.tra -exact
+-exportmodel cluster.sm.exact.sta -exact
+-exportmodel cluster.sm.exact.lab -exact
+-exportmodel cluster.sm.exact.srew -exact
+-exportmodel cluster.sm.exact.trew -exact

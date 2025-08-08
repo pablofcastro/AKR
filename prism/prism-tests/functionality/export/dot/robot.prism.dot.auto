@@ -1,0 +1,2 @@
+-exporttransdot robot.prism.dot -ex
+-exporttransdotstates robot.prism.sta.dot -ex
