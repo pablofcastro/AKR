@@ -1,0 +1,12 @@
+plts: 
+
+module plts
+    v : bool; 
+    [a] v = false -> 0.5:(v'=true) + 0.5:(v'=false); 
+endmodule
+
+endplts
+perception : a*
+endperception
+property : v
+endproperty 
