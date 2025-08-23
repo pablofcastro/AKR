@@ -1,9 +1,0 @@
-plts: 
-    module
-         v : [0..1] init 0; 
-         [a] v = 0 -> 0.5:v'=1 + 0.5:v'=0 
-endplts
-perception : a*
-endperception
-property : Kh(!v,v) >= 1.0
-endproperty 

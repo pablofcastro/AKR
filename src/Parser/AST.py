@@ -6,21 +6,21 @@ from abc import ABC, abstractmethod
 
 #class for Specifications
 class Spec(ABC) :
-    def __init__(self, prismmodel, regexps, property) :
+    def __init__(self, prismmodel, perception, property) :
         self.prismmodel = prismmodel
-        self.regexps = regexps
+        self.perception = perception
         self.property = property 
     
     def __str__(self) :
         return f"""
                 PLTS: {str(self.prismmodel)}
-                Perception: {str(self.regexps)}
+                Perception: {str(self.perception)}
                 Property: {str(self.property)}
                 """
 
     def accept(self, visitor) :
         self.prismmodel.accept(visitor)
-        self.regexps.accept(visitor)
+        self.perception.accept(visitor)
         self.property.accept(visitor)
   
 # Class for the Prism model
@@ -124,7 +124,7 @@ class Form(ABC):
         pass
 
     @abstractmethod
-    def accept(visitor) :
+    def accept(self, visitor) :
         pass
 
 
@@ -168,7 +168,7 @@ class Not(UnaryOperation):
 
     def accept(self, visitor) :
         super().accept(visitor)
-        visitor.visit_lnot(self)
+        visitor.visit_not(self)
 
 
 # Base class for binary operations
@@ -210,5 +210,6 @@ class Kh(Form):
         return f"Kh({str(self.left)},{str(self.right)})>={self.lb}"
 
     def accept(self, visitor) :
-        super().accept(visitor)
+        self.left.accept(visitor)
+        self.right.accept(visitor)
         visitor.visit_kh(self)

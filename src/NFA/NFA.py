@@ -127,15 +127,17 @@ class NFA:
         # [s] state=i -> 1 : state=j0
         #  ...
         # [s] state=i -> 1: state=jn
-        result = (f"""mdp:\n"""
-                  f"""  module {self.name}\n"""
-                  f"""      state : [0..{len(self.states)-1}] init {self.states_index[self.start_state]};\n"""
-                  f"""      accept : [0..1] init {1 if self.start_state in self.accept_states else 0};\n"""
+        result = (
+                  f"""  module perception\n"""
+                  f"""      state : [0..{len(self.states)-1}];\n"""
+                  f"""      accept : [0..1];\n"""
+            #      f"""      state : [0..{len(self.states)-1}] init {self.states_index[self.start_state]};\n"""
+            #      f"""      accept : [0..1] init {1 if self.start_state in self.accept_states else 0};\n"""
                  )
         
         for state,simbol in self.transitions.keys() :
             for succ in self.transitions[(state, simbol)] :
-                result = result + f"""      [{simbol}] state={self.states_index[state]} -> 1: state' = {self.states_index[succ]} & accept'={1 if succ in self.accept_states else 0}\n"""
+                result = result + f"""      [{simbol}] (state={self.states_index[state]}) -> 1: (state' = {self.states_index[succ]}) & (accept'={1 if succ in self.accept_states else 0});\n"""
         result = result + " endmodule"
         return result
 
