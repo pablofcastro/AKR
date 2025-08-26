@@ -6,13 +6,14 @@ class NFA:
 
     def __init__(self, name, states, alphabet, transitions, start_state, accept_states):
         """ The name, states, alphabet, transitions, start_state, accept_states, are initiliazed"""
-        self.name = name
+        self.name = name 
         self.states = states  # set of states
         self.alphabet = alphabet  # set of symbols (excluding epsilon)
         self.transitions = transitions  # dict: (state, symbol) -> set of states
         self.start_state = start_state # the start state
         self.accept_states = accept_states  # set of accepting states
         self.states_index = {st:i for i,st in enumerate(states)} # an enumaration of the states, useful for tranlating the automata to PRISM code
+        self.trap_state = "" # the trap state if this exists
 
     def add_transitions(self, state, symbol, succ_states) :
         """ 
@@ -38,7 +39,6 @@ class NFA:
         # the state is removed
         self.states.discard(state)
 
-        
     
     def closure(self, states) :
         """ It computes the closure of a set of states """
@@ -77,8 +77,6 @@ class NFA:
 
     def remove_epsilon(self) :
         """ Removes the epsilon transitions from every state, it first computes the closure and then removes the epsilon transitions """
-        print(self.states)
-        print(self.accept_states)
         # if a state reaches a accept states by epsilon closure, then it is accepting too
         for state in self.states :
             if bool(self.epsilon_closure({state}).intersection(self.accept_states)) :
@@ -99,6 +97,25 @@ class NFA:
 
         # we reindex the states
         self.states_index = {st:i for i,st in enumerate(self.states)}
+
+    def complete(self) :
+        """
+            This method completes the NFA adding an trap state
+        """
+        # we add a new trap state
+        self.trap_state = "qtrap"
+        assert not (self.trap_state in self.states)
+
+        self.states.add(self.trap_state)
+        # we complete the transitions, including the one for the trap state
+        for state in self.states :
+            for symbol in self.alphabet :
+                if not ((state, symbol) in self.transitions) :
+                    self.transitions[(state, symbol)] = { self.trap_state }
+        
+        # we reindex the states
+        self.states_index = {st:i for i,st in enumerate(self.states)}
+
 
     def move(self, states, symbol):
         """Returns the set of states reachable from any of the input states using the given symbol."""
@@ -169,5 +186,21 @@ def test1() :
         result = nfa.accepts(s)
         print(f"Input: {s!r} -> {'Accepted' if result else 'Rejected'}")
 
+def test2() :
+    """ A simple test """
+    states = {'q0', 'q1', 'q2'}
+    alphabet = {'a', 'b', 'c'}
+    transitions = {
+        ('q0', 'a'): {'q1'},
+        ('q1', 'a'): {'q1', 'q2'},
+        ('q1', 'b'): {'q1'}
+    }
+    start_state = 'q0'
+    accept_states = {'q2'}
+
+    nfa = NFA("foo", states, alphabet, transitions, start_state, accept_states)
+    nfa.complete() # we complete the NFA
+    print(nfa)
+
 if __name__ == "__main__":
-    test1()
+    test2()

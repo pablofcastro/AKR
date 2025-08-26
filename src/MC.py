@@ -11,7 +11,7 @@ import traceback
 
 class ModelCheck(visitor.FormulaVisitor) :
     
-    def __init__(self, model, prism_path, file) :
+    def __init__(self, model, prism_path, file, verbosity=0) :
         """
             the constructor for this class:
                 model: it is a dictionary where:
@@ -22,21 +22,25 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.model = model # model contains all the information about the model, the prism model and the perceptions as prism models
         self.prism_path = prism_path
         self.file = file # the file where the prism model is
+        self.witness = "" # the witness for the property, if there is one
+        self.verbosity = verbosity
 
     def __prism_call__(self, model, property) :
         """
             Private method that calls prism and model checks property "property" in model "model"
         """
-        verbosity = 0 
+        verbosity = 0
         command = self.prism_path+"/bin/prism"
         with open(self.file, 'w') as f :
             f.write(model)
         row = {} # the results are saved to a dictionary
-        if (verbosity >= 5) :
+        if (self.verbosity >= 5) :
             print(model)
             print(property)
         try :
             result = subprocess.run([command, self.file, '-pf', property], capture_output=True).stdout.decode()
+            if (self.verbosity >= 5) :
+                print(result)
             for line in result.splitlines() :
                 words = line.split()
                 if line.startswith("States") : 
@@ -102,19 +106,23 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.to_states[str(kh)] = "false"
 
         # for every perception we check if the formula holds
-        for perception in self.model["perceptions"] :
+        for perception,regex in self.model["perceptions"] :
             # we define the initial states
-            init_states = "init  \n" + self.to_states[str(kh.left)] + " & " + f"""state={perception.states_index[perception.start_state]}\nendinit"""
+            init_states = "init  \n ("+self.to_states[str(kh.left)] + ") & " + f"""(state={perception.states_index[perception.start_state]})\nendinit"""
 
             # we construct the model
             model = self.model["plts"]+"\n"+perception.toPrism()+"\n"+init_states # we construct the model
 
             end_states = " | ".join([f"""state={perception.states_index[end_state]}""" for end_state in perception.accept_states])
             # we define the property
-            property = f"""P>={kh.lb}[F ({self.to_states[str(kh.right)]} & ({end_states}))]"""
+            #property = f"""Pmin>={kh.lb}[F ({self.to_states[str(kh.right)]} & ({end_states}))] <= """
+            property = f"""Pmin=?[F (state={perception.states_index[perception.trap_state]}) | ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb} & 
+            Pmax=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>0"""
 
             # we call the model checker
             output = self.__prism_call__(model, property)
             if output["result"] == "true" :
                 self.to_states[str(kh)] = "true"
+                self.witness = str(regex) # we save the regexp that makes true the property
+                break # a perception that makes true the formula is found
 
