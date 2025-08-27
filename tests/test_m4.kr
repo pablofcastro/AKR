@@ -7,7 +7,7 @@ module plts
     
     [a] (s=0 & initial=true & fin = false) -> 1:(s'=2)&(initial'=false) & (fin'=false);
    
-    [] (s=1 & initial=true & fin = false) -> 1:(s'=3) & (initial'=false) & (fin'=false);
+    [b] (s=1 & initial=true & fin = false) -> 1:(s'=3) & (initial'=false) & (fin'=false);
    
     [b](s=2 & initial=false & fin = false) -> 1:(s'=4) & (initial'=false) & (fin'=true); 
 
