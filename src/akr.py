@@ -31,13 +31,13 @@ def main() :
     parser = argparse.ArgumentParser()
     spec_file_name = "temp/model.prism" # this is the file where the model is stored,
     # create the arguments for the command line  
-    parser.add_argument("-v", "--verbose", help="increase output verbosity", dest="verbosity", type=int, metavar="VERBOSITY")
+    parser.add_argument("-v", "--verbose", help="Increase output verbosity", dest="verbosity", type=int, metavar="VERBOSITY")
     parser.add_argument("-i", "--input", dest="file", required=True, type=validate_file,
-                        help="the file with the model", metavar="FILE")  
+                        help="The file with the model", metavar="FILE")  
     parser.add_argument("-a", "--alphabet", dest="alphabet", required=False, type=str,
-                        help="the alphabet considered", metavar="ALPHABET")
+                        help="The alphabet considered", metavar="ALPHABET")
     parser.add_argument("-pp", "--prism-path", dest="prism", required=False, type=str,
-                        help="the path to prism tool", metavar="PRISMPATH")
+                        help="The path to prism tool, by default is ../prism/prism/", metavar="PRISMPATH")
     args = parser.parse_args()
 
     try :
@@ -66,6 +66,12 @@ def main() :
         # Prism was not found 
         print("Prism was not found...")
         print("Pass a correct path for prism, or follow the instructions in README.md")
+        sys.exit(1)
+
+    try :
+        os.mkdir("temp")
+    except :
+        print("Error creating the folder temp.")
         sys.exit(1)
 
     start_time = time.perf_counter() # to compute time 
