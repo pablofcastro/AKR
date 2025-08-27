@@ -21,7 +21,9 @@ is included with AKR. As explained below, you can also use an already installed 
 
 To run the tool using a installed version of prism just execute:
 
-> python akr.py -i mymodel.kr -pp <prism-path>
+```
+python akr.py -i mymodel.kr -pp <prism-path>
+```
 
 where <prism-path> is the path to the prism installation. mymodel.kr is a file containing 
 the specification to be analysed (see below).
@@ -44,7 +46,9 @@ you can test if prism is installed by executing:
 
 Now, for running the tool you can execute:
 
-```python src/akr.py -i mymodel.kr``` 
+```
+python src/akr.py -i mymodel.kr
+``` 
 
 # The specification file
 
