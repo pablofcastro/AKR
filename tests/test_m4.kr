@@ -15,7 +15,7 @@ module plts
 
 endmodule
 endplts
-perception : (ba)+(ab)
+perception : (a.b) + (b.a)
 endperception
 property : Kh(initial,fin) >= 1
 endproperty 
