@@ -15,5 +15,5 @@ endmodule
 endplts
 perception : (a.b) + (a.c)
 endperception
-property : !(Kh(initial,fin) >= 1)
+property : !(Kh(initial,fin) >= 0.5)
 endproperty 
