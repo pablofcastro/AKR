@@ -78,7 +78,9 @@ endproperty
 
 By default the tool deducts the alphabet from the regular expressions. For instance, in the example above the alphabet deducted from the regular expressions is {a,b}. Alphabets can be passed as argument to the tool as follows:
 
-> python src/akr.py -i mymodel.kr -a a,b,c
+```
+python src/akr.py -i mymodel.kr -a a,b,c
+```
 
 It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note that the used alphabet may have an impact in the verification.
 
