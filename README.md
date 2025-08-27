@@ -52,19 +52,21 @@ The input of the model checker consists of a specification, it is made of three 
 
 The following is a simple example of specification:
 
->plts: 
->    module mymodel:
->        v : bool; 
->        [a] v = false -> 0.5:(v'=true) + 0.5:(v'=false); 
->        [b] v = true -> 0.1:(v'=true) + 0.9:(v'=false); 	
->    endmodule
->endplts
->
->perception : a*;(a+b)
->endperception
->
->property : Kh(!v,v) >= 0.5
->endproperty 
+```
+plts: 
+    module mymodel:
+        v : bool; 
+        [a] v = false -> 0.5:(v'=true) + 0.5:(v'=false); 
+        [b] v = true -> 0.1:(v'=true) + 0.9:(v'=false); 	
+    endmodule
+endplts
+
+perception : a*;(a+b)
+endperception
+
+property : Kh(!v,v) >= 0.5
+endproperty 
+```
 
 By default the tool deducts the alphabet from the regular expressions. For instance, in the example above the alphabet deducted from the regular expressions is {a,b}. Alphabets can be passed as argument to the tool as follows:
 
