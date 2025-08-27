@@ -1,23 +1,19 @@
 plts: 
 
+formula initial = (s=0);
+formula fin = (s=3) | (s=4);
+
 module plts
     s : [0..4];   
-    initial: bool;
-    fin : bool;
     
-    [a] (s=0 & initial=true & fin = false) -> 0.5:(s'=1)&(initial'=false)&(fin'=false) + 0.5:(s'=2)&(initial'=false)&(fin'=false);
-   
-    [b] (s=1 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
-   
-    [c](s=1 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
-   
-    [b] (s=2 & initial=false & fin = false) -> 0.9:(s'=3) & (initial'=false) & (fin'=false) + 0.1:(s'=4) & (initial'=false) & (fin'=true);
-    
-    [c] (s=2 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
-
+    [a] (s=0) -> 0.5:(s'=1) + 0.5:(s'=2);
+    [b] (s=1) -> 0.9:(s'=3) + 0.1:(s'=4);   
+    [c] (s=1) -> 0.1:(s'=3) + 0.9:(s'=4);
+    [b] (s=2) -> 0.1:(s'=3) + 0.9:(s'=4);
+    [c] (s=2) -> 0.9:(s'=3) + 0.1:(s'=4);
 endmodule
 endplts
 perception : (a.b) + (a.c)
 endperception
-property : !(Kh(initial,fin) >= 0.5)
+property : !(Kh(initial,fin) >= 1)
 endproperty 
