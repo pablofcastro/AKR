@@ -5,11 +5,11 @@ This tool implements the algorithm of model checking described in:
 *How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
 Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
-The logic is described in the paper but it mainly provides the formula: 
+The logic is described in the paper but it mainly implement an algoirthm to check formulas of the type:  
 
 Kr(A,B) >= Q  
 
-Intuitively, it says that the agent knows how to satisfy B from A, given a collection 
+Intuitively, it says that an agent knows how to satisfy B from A, given a collection 
 of perceptions.
 
 # Running the tool
