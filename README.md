@@ -1,4 +1,4 @@
-# AKR: A Model Checker for an Adaptative Knowing-How Probabilistic Logic
+# AKR: A Model Checker for an Adaptative Knowing-How Probabilistic Logic with Regular Expression Perceptions
 
 This tool implements the algorithm of model checking described in: 
 
@@ -7,7 +7,7 @@ Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
 The logic is described in the paper but it mainly implement an algoirthm to check formulas of the type:  
 
-Kr(A,B) >= Q  
+Kh(A,B) >= Q  
 
 Intuitively, it says that an agent knows how to satisfy B from A, given a collection 
 of perceptions.
