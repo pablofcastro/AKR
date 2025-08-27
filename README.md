@@ -31,16 +31,20 @@ the specification to be analysed (see below).
 If the PRISM tool is not already installed, you can install PRISM using the provided distribution,
 for that, execute the following commands from the main folder.
 
-> cd prism/prism
-> make
+```
+cd prism/prism
+make
+```
 
 you can test if prism is installed by executing:
 
-> ./bin/prism 
+```
+./bin/prism 
+````
 
 Now, for running the tool you can execute:
 
-> python src/akr.py -i mymodel.kr 
+```python src/akr.py -i mymodel.kr``` 
 
 # The specification file
 
