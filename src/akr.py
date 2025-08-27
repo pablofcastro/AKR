@@ -69,7 +69,8 @@ def main() :
         sys.exit(1)
 
     try :
-        os.mkdir("temp")
+        if not os.path.exists("temp"):
+            os.mkdir("temp")
     except :
         print("Error creating the folder temp.")
         sys.exit(1)
