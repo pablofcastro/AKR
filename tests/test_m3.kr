@@ -1,0 +1,23 @@
+plts: 
+
+module plts
+    s : [0..4];   
+    initial: bool;
+    fin : bool;
+    
+    [a] (s=0 & initial=true & fin = false) -> 0.5:(s'=1)&(initial'=false)&(fin'=false) + 0.5:(s'=2)&(initial'=false)&(fin'=false);
+   
+    [b] (s=1 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
+   
+    [c](s=1 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
+   
+    [b] (s=2 & initial=false & fin = false) -> 0.9:(s'=3) & (initial'=false) & (fin'=false) + 0.1:(s'=4) & (initial'=false) & (fin'=true);
+    
+    [c] (s=2 & initial=false & fin = false) -> 0.1:(s'=3) & (initial'=false) & (fin'=false) + 0.9:(s'=4) & (initial'=false) & (fin'=true);
+
+endmodule
+endplts
+perception : a;(b+c)
+endperception
+property : !(Kh(initial,fin) >= 0.5)
+endproperty 
