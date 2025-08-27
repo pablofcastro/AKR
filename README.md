@@ -26,7 +26,7 @@ To run the tool using a installed version of prism just execute:
 where <prism-path> is the path to the prism installation. mymodel.kr is a file containing 
 the specification to be analysed (see below).
 
-## Running the tool using without having PRISM installed
+## Running the tool without having PRISM installed
 
 If the PRISM tool is not already installed, you can install PRISM using the provided distribution,
 for that, execute the following commands from the main folder.
