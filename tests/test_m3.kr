@@ -1,7 +1,7 @@
 plts: 
 
 formula initial = (s=0);
-formula fin = (s=3) | (s=4);
+formula fin = (s=4);
 
 module plts
     s : [0..4];   
@@ -13,7 +13,7 @@ module plts
     [c] (s=2) -> 0.9:(s'=3) + 0.1:(s'=4);
 endmodule
 endplts
-perception : (a.b) + (a.c)
+perception : a.b + a.c
 endperception
-property : !(Kh(initial,fin) >= 0.5)
+property : !Kh(initial,fin) >= 0.5
 endproperty 

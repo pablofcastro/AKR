@@ -97,6 +97,12 @@ def main() :
         regexp.accept(re_visitor)
         nfa = re_visitor.translate[str(regexp)]
         nfa.remove_epsilon()
+
+        # if the automaton is not deterministic, we translate it to a determinist automaton
+        if not nfa.is_dfa() :
+            nfa.to_dfa() 
+        
+        # we add a trap state
         nfa.complete()
         spec['perceptions'].append((nfa,regexp))
     

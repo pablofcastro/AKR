@@ -13,7 +13,36 @@ class NFA:
         self.start_state = start_state # the start state
         self.accept_states = accept_states  # set of accepting states
         self.states_index = {st:i for i,st in enumerate(states)} # an enumaration of the states, useful for tranlating the automata to PRISM code
-        self.trap_state = "" # the trap state if this exists
+        self.trap_state = None # the trap state if this exists
+
+    def __states_to_string(states) :
+        """
+            Private and static method that returns a string representation of a set of states
+            note that in contrast to the standard str, the string representation is always the same
+        """
+        list = [s for s in states]
+        list.sort()
+        result = "".join(list)
+        return result
+
+    def is_dfa(self) :
+        """
+        True iff the current automata is a DFA
+        """
+        for state in self.states :
+            for symbol in self.alphabet :
+                if (state, symbol) in self.transitions and len(self.transitions[(state,symbol)]) > 1 :
+                    return False
+        return True
+
+    def has_epsilon_transitions(self) :
+        """
+            True iff self has epsilon transitions
+        """
+        for state in self.states :
+            if (state,'') in self.transitions :
+                return True
+        return False
 
     def add_transitions(self, state, symbol, succ_states) :
         """ 
@@ -116,6 +145,52 @@ class NFA:
         # we reindex the states
         self.states_index = {st:i for i,st in enumerate(self.states)}
 
+    def to_dfa(self) :
+        """ 
+            Translate a NFA to a DFA
+        """
+        # we assume that it does not have epsilon transitions
+        assert not self.has_epsilon_transitions()
+
+        dfa_init_state = NFA.__states_to_string({ self.start_state })
+        dfa_states = set()
+        dfa_accept_states = set()
+        dfa_states.add(dfa_init_state)
+        dfa_transitions = {}
+        dfa_accept_states = set()
+        dfa_alphabet = self.alphabet
+        # using deque will improve time
+        queue = []
+        queue.append({ self.start_state })
+        marked = { NFA.__states_to_string(self.start_state) }
+        while queue :
+            current_dfa_state = queue.pop(0) # we take an state from the queue
+            for symbol in self.alphabet : # for each symbol
+                next_state_dfa = set()
+                for state in current_dfa_state : # we compute a new state (set of staes)
+                    if (state,symbol) in self.transitions:
+                        for next_state_nfa in self.transitions[(state,symbol)] :
+                            next_state_dfa.add(next_state_nfa)
+                if len(next_state_dfa) > 0 :
+                    dfa_states.add(NFA.__states_to_string(next_state_dfa))
+                    if len(self.accept_states.intersection(next_state_dfa))>0 : # if some final state in the set then it is final
+                        dfa_accept_states.add(NFA.__states_to_string(next_state_dfa))
+                    if NFA.__states_to_string(next_state_dfa) not in marked :
+                        queue.append(next_state_dfa)
+                        marked.add(NFA.__states_to_string(next_state_dfa))
+                    dfa_transitions[(NFA.__states_to_string(current_dfa_state), symbol)] = {NFA.__states_to_string(next_state_dfa)} # it is only one because it is deterministic
+        
+        # we change the states of the automaton
+        self.states = dfa_states 
+        self.transitions = dfa_transitions  # dict: (state, symbol) -> set of states
+        self.start_state = dfa_init_state # the start state
+        self.accept_states = dfa_accept_states  # set of accepting states
+        self.states_index = {st:i for i,st in enumerate(self.states)} # an enumaration of the states, useful for tranlating the automata to PRISM code
+        if self.trap_state is not None :
+            self.trap_state = self.__states_to_string({ self.trap_state })
+
+        # we ensure that the automaton is deterministic
+        assert self.is_dfa()
 
     def move(self, states, symbol):
         """Returns the set of states reachable from any of the input states using the given symbol."""
@@ -202,5 +277,42 @@ def test2() :
     nfa.complete() # we complete the NFA
     print(nfa)
 
+def test_nfa_to_dfa1() :
+    states = {'q0', 'q1', 'q2'}
+    alphabet = {'a', 'b'}
+    transitions = {
+        ('q0', 'a'): {'q0', 'q1'},
+        ('q0', 'b'): {'q0'},
+        ('q1', 'b'): {'q2'}
+    }
+    start_state = 'q0'
+    accept_states = {'q2'}
+    nfa = NFA("foo", states, alphabet, transitions, start_state, accept_states)
+    nfa.to_dfa()
+    print(nfa)
+
+def test_nfa_to_dfa2() :
+    states = {'q0', 'q1', 'q2'}
+    alphabet = {'a', 'b'}
+    transitions = {
+        ('q0', 'a'): {'q0'},
+        ('q0', 'b'): {'q1'},
+        ('q1', 'a'): {'q1','q2'},
+        ('q1', 'b'): {'q1'},
+        ('q2', 'a'): {'q2'},
+        ('q2', 'b'): {'q1','q2'}
+    }
+    start_state = 'q0'
+    accept_states = {'q2'}
+    nfa = NFA("foo", states, alphabet, transitions, start_state, accept_states)
+    print("Is deterministic:")
+    print(nfa.is_dfa())
+    nfa.to_dfa()
+    print(nfa)
+    print("Is deterministic:")
+    print(nfa.is_dfa())
+
+
+
 if __name__ == "__main__":
-    test2()
+    test_nfa_to_dfa2()
