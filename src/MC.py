@@ -83,13 +83,28 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.to_states[str(var)] = str(var) # each var characterizes itself
 
     def visit_or(self, disj) :
-        self.to_states[str(disj)] = f""" {str(disj.left)} | {str(disj.right)} """ 
+        if self.to_states[str(disj.left)] == "true" | self.to_states[str(disj.right)] == "true" :
+            self.to_states[str(disj)] = "true"
+        elif self.to_states[str(disj.left)] == "false" & self.to_states[str(disj.right)] == "false" :
+            self.to_states[str(disj)] = "false"
+        else :
+            self.to_states[str(disj)] = f""" {self.to_states[str(disj.left)]} | {self.to_states[str(disj.right)]} """ 
     
     def visit_and(self, conj) :
-        self.to_states[str(conj)] = f""" {str(conj.left)} & {str(conj.right)} """ 
-    
+        if self.to_states[str(conj.left)] == "true" & self.to_states[str(conj.right)] == "true" :
+            self.to_states[str(conj)] = "true"
+        elif self.to_states[str(conj.left)] == "false" | self.to_states[str(conj.right)] == "false" :
+            self.to_states[str(conj)] = "false"
+        else :
+            self.to_states[str(conj)] = f""" {self.to_states[str(conj.left)]} & {self.to_states[str(conj.right)]} """ 
+        
     def visit_not(self, neg) :
-        self.to_states[str(neg)] = f""" ! {str(neg.operand)} """ 
+        if self.to_states[str(neg.operand)] == "true" :
+            self.to_states[str(neg)] = "false"
+        elif self.to_states[str(neg.operand)] == "false" :
+            self.to_states[str(neg)] = "true"
+        else :
+            self.to_states[str(neg)] = f""" ! {str(neg.operand)} """ 
 
     def visit_kh(self, kh) :
         # to check Kh(A,B) :
