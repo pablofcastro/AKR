@@ -18,7 +18,7 @@ module plts
     [mb] (s=5) -> 0.1:(s'=9) + 0.9:(s'=10);     
 endmodule
 endplts
-perception : lf.mb; (st.mb + st.pn); (rm.mb + rm.pn)
+perception : lf.mb; (st.mb + st.pn + rm.mb + rm.pn)
 endperception
 property : Kh(initial,fin) >= 0.95
 endproperty 
