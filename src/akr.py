@@ -3,8 +3,15 @@
 """
 import argparse, os
 import sys
-sys.path.insert(1, './Parser')
-sys.path.insert(1, './NFA')
+script_path = os.path.abspath(__file__)
+script_dir = os.path.dirname(script_path)
+print(script_dir)
+relative_file_path_parser = os.path.join(script_dir, 'Parser')
+relative_file_path_nfa = os.path.join(script_dir, 'NFA')
+#sys.path.insert(1, './Parser')
+sys.path.insert(1, relative_file_path_parser)
+#sys.path.insert(1, './NFA')
+sys.path.insert(1, relative_file_path_nfa)
 import AST
 import parser as model_parser
 import translator_regexp_nfa as translator
