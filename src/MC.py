@@ -3,11 +3,14 @@
 """
 import sys
 sys.path.insert(1, './Parser')
+sys.path.insert(1, './Prism')
 import AST
+import PrismModel as prism
 import form_visitor as visitor
 import NFA as nfa
 import sys, os, subprocess, csv, re, signal # needed for the system calls
 import traceback
+import re
 
 class ModelCheck(visitor.FormulaVisitor) :
     
@@ -55,6 +58,7 @@ class ModelCheck(visitor.FormulaVisitor) :
             print(Exception)
             traceback.print_exc()
         return row
+
 
     def get_states(self, property) :
         """ 
@@ -126,13 +130,18 @@ class ModelCheck(visitor.FormulaVisitor) :
             init_states = "init  \n ("+self.to_states[str(kh.left)] + ") & " + f"""(state={perception.states_index[perception.start_state]})\nendinit"""
 
             # we construct the model
-            model = self.model["plts"]+"\n"+perception.toPrism()+"\n"+init_states # we construct the model
+            #model = self.model["plts"]+"\n"+perception.toPrism()+"\n"+init_states # we construct the model
+
+            module_system = prism.PrismModel(self.model["plts"])
+            module_percep = prism.PrismModel(perception.toPrism())
+            model = str(module_system.cross_product(module_percep))+"\n"+init_states # we construct the model
 
             end_states = " | ".join([f"""state={perception.states_index[end_state]}""" for end_state in perception.accept_states])
             # we define the property
             #property = f"""Pmin>={kh.lb}[F ({self.to_states[str(kh.right)]} & ({end_states}))] <= """
-            property = f"""Pmin=?[F (state={perception.states_index[perception.trap_state]}) | ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb} & 
-            Pmax=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>0"""
+            #property = f"""Pmin=?[F (state={perception.states_index[perception.trap_state]}) | ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb} & 
+            #Pmax=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>0"""
+            property = f"""Pmin=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb}"""
 
             # we call the model checker
             output = self.__prism_call__(model, property)
