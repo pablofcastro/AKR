@@ -109,8 +109,9 @@ def main() :
         if not nfa.is_dfa() :
             nfa.to_dfa() 
         
+        nfa.to_live()
         # we add a trap state
-        nfa.complete()
+        #nfa.complete()
         spec['perceptions'].append((nfa,regexp))
     
     #for perception in spec['perceptions'] :

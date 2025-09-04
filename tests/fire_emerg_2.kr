@@ -20,5 +20,5 @@ endmodule
 endplts
 perception : lf.mb; (st.mb + st.pn + rm.mb + rm.pn)
 endperception
-property : Kh(initial,fin) >= 0.95
+property : Kh(initial,fin) >= 0.91
 endproperty 

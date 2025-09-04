@@ -25,6 +25,12 @@ class NFA:
         result = "".join(list)
         return result
 
+    def __reindex__(self) :
+        """
+            Reindex the states in the automaton
+        """
+        self.states_index = {st:i for i,st in enumerate(self.states)}
+
     def is_dfa(self) :
         """
         True iff the current automata is a DFA
@@ -62,11 +68,19 @@ class NFA:
         """ Remove the given state from the NFA """
         # first, we remove the transitions
         for st, symbol in list(self.transitions.keys()) :
-            if st == state :
+            if st == state or state == self.transitions[(st, symbol)] :
                 del self.transitions[(st, symbol)]
 
-        # the state is removed
+        # the state is removed for the state
         self.states.discard(state)
+        # removed from final states too
+        self.accept_states.discard(state)
+        # removed if it is the initial state
+        if self.start_state == state :
+            raise Exception('The automaton has no initial state')
+        if self.trap_state == state :
+            self.trap_state = None
+        self.__reindex__() # we reindex the states
 
     
     def closure(self, states) :
@@ -125,7 +139,8 @@ class NFA:
         self.remove_disconnected()
 
         # we reindex the states
-        self.states_index = {st:i for i,st in enumerate(self.states)}
+        #self.states_index = {st:i for i,st in enumerate(self.states)}
+        self.__reindex__()
 
     def complete(self) :
         """
@@ -143,7 +158,8 @@ class NFA:
                     self.transitions[(state, symbol)] = { self.trap_state }
         
         # we reindex the states
-        self.states_index = {st:i for i,st in enumerate(self.states)}
+        self.__reindex__()
+        #self.states_index = {st:i for i,st in enumerate(self.states)}
 
     def to_dfa(self) :
         """ 
@@ -185,12 +201,33 @@ class NFA:
         self.transitions = dfa_transitions  # dict: (state, symbol) -> set of states
         self.start_state = dfa_init_state # the start state
         self.accept_states = dfa_accept_states  # set of accepting states
-        self.states_index = {st:i for i,st in enumerate(self.states)} # an enumaration of the states, useful for tranlating the automata to PRISM code
+        self.__reindex__()
+        #self.states_index = {st:i for i,st in enumerate(self.states)} # an enumaration of the states, useful for tranlating the automata to PRISM code
         if self.trap_state is not None :
             self.trap_state = self.__states_to_string({ self.trap_state })
 
         # we ensure that the automaton is deterministic
         assert self.is_dfa()
+
+    def to_live(self) :
+        """
+            Transform a DFA into a live automaton
+        """
+        live_states = set()
+        live_states.update(self.accept_states)
+        set_size = -1
+        while len(live_states) > set_size :
+            set_size = len(live_states)
+            for state in live_states.copy() :
+                preds = { pred for (pred,symbol) in self.transitions.keys() if state in self.transitions[(pred,symbol)] }
+                live_states.update(preds)
+
+        # the initial state have to be a live state
+        assert self.start_state in live_states
+
+        # we remove every dead state
+        for state in self.states.difference(live_states) :
+            self.remove_state(state)
 
     def move(self, states, symbol):
         """Returns the set of states reachable from any of the input states using the given symbol."""
