@@ -9,5 +9,5 @@ endmodule
 endplts
 perception : a*;(a+b)
 endperception
-property : Kh(!v,v) >= 0.5
+property : Kh(!v,v) >= 0.5 & Kh(v,v)>= 0.1
 endproperty 

@@ -87,17 +87,17 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.to_states[str(var)] = str(var) # each var characterizes itself
 
     def visit_or(self, disj) :
-        if self.to_states[str(disj.left)] == "true" | self.to_states[str(disj.right)] == "true" :
+        if self.to_states[str(disj.left)] == "true" or self.to_states[str(disj.right)] == "true" :
             self.to_states[str(disj)] = "true"
-        elif self.to_states[str(disj.left)] == "false" & self.to_states[str(disj.right)] == "false" :
+        elif self.to_states[str(disj.left)] == "false" and self.to_states[str(disj.right)] == "false" :
             self.to_states[str(disj)] = "false"
         else :
             self.to_states[str(disj)] = f""" {self.to_states[str(disj.left)]} | {self.to_states[str(disj.right)]} """ 
     
     def visit_and(self, conj) :
-        if self.to_states[str(conj.left)] == "true" & self.to_states[str(conj.right)] == "true" :
+        if self.to_states[str(conj.left)] == "true" and self.to_states[str(conj.right)] == "true" :
             self.to_states[str(conj)] = "true"
-        elif self.to_states[str(conj.left)] == "false" | self.to_states[str(conj.right)] == "false" :
+        elif self.to_states[str(conj.left)] == "false" or self.to_states[str(conj.right)] == "false" :
             self.to_states[str(conj)] = "false"
         else :
             self.to_states[str(conj)] = f""" {self.to_states[str(conj.left)]} & {self.to_states[str(conj.right)]} """ 
