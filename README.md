@@ -47,7 +47,8 @@ you can test if prism is installed by executing:
 Now, for running the tool you can execute:
 
 ```
-python src/akr.py -i mymodel.kr
+cd src/
+python akr.py -i mymodel.kr
 ``` 
 
 # The specification file
