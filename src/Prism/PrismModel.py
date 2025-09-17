@@ -5,6 +5,10 @@ class PrismCommand :
         Class that models Prism command: prob:(assign0)&(assign1)...
     """
     def __init__(self, text=None) :
+        """
+            Given a text representing a command of stype 0.5:(s'=E1) & ... & (s'=En), the probability and the command
+            are separated.
+        """
         if text is not None :
             prob, assigns =  text.split(":", 1)  # split only on the first ":"
             self.prob = float(prob) 
@@ -42,7 +46,8 @@ class PrismAction :
     
     def get_commands(commands) :
         """
-            it gets all the commands, parse 
+            it gets all the commands from a string of type "0.5:(s=exp2) + 0.5:(s=exp3) ..."
+            needed because prism overloads the operator +
         """
         result = []
         init = 0
@@ -62,7 +67,7 @@ class PrismAction :
         
     def cross_product(self, action) :
         """
-            Computes the crosss product between to actions
+            Computes the crosss product between two actions
         """
         if not (self.label == action.label) :
             return None
@@ -86,6 +91,9 @@ class PrismAction :
 
 
 class PrismModel :
+    """
+        Provides basic methods to deal with a Prism model, it does not completely parse it, it only takes the need parts
+    """
     def __init__(self, text = None) :
         self.glob = ""
         self.name = ""
@@ -112,6 +120,11 @@ class PrismModel :
             self.actions = []
     
     def cross_product(self, pmodel) :
+        """
+            Computes the cross product between two Prism Models.
+            For instance, if we have [a] B -> C in one component  and [a] B' -> C'
+            this will generate [a] B & B' -> C & C'
+        """
         result_model = PrismModel()
         result_model.name = "product"
         result_model.glob = self.glob + pmodel.glob
@@ -154,6 +167,13 @@ def test1() :
       [mb] (state=3) -> 1: (state' = 2) & (accept'=1);
       [pn] (state=3) -> 1: (state' = 1) & (accept'=1);
  endmodule"""
+    model3 = f"""module perception
+      state : [0..3];
+      accept : [0..1];
+      [rm] (state=0) -> 1: (state' = 3) & (accept'=0);
+      [mb] (state=3) -> 1: (state' = 2) & (accept'=1);
+      [pn] (state=3) -> 1: (state' = 1) & (accept'=1);
+ endmodule"""
     pm1 = PrismModel(model1)
     print(str(pm1))
     pm2 = PrismModel(model2)
@@ -162,5 +182,5 @@ def test1() :
 
     
 if __name__ == "__main__" :
-    #test1()
-    print(PrismAction.get_commands("0.2:(s'=1) + 0.8:(s'=2);"))
+    test1()
+    

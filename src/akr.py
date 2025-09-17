@@ -109,9 +109,9 @@ def main() :
         if not nfa.is_dfa() :
             nfa.to_dfa() 
         
+        # we translate the automaton to a live one
         nfa.to_live()
-        # we add a trap state
-        #nfa.complete()
+       
         spec['perceptions'].append((nfa,regexp))
     
     #for perception in spec['perceptions'] :
@@ -125,7 +125,7 @@ def main() :
     print("Property checked: "+str(ast.property))
     if (modelchecker.to_states[str(ast.property)] == "true") | (modelchecker.to_states[str(ast.property)] == "false") :
         print("The property is " + modelchecker.to_states[str(ast.property)])
-        if (modelchecker.to_states[str(ast.property)] == "true") :
+        if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) :
             print("the witness is :" + modelchecker.witness)
     else :
         print("The property holds in states:" + str(modelchecker.get_states(str(ast.property))))
