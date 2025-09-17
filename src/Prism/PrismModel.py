@@ -32,11 +32,33 @@ class PrismAction :
             label, guard, commands = match.groups()
             self.label = label.strip()
             self.guard = guard.strip()
-            self.commands = [PrismCommand(part.strip()) for part in commands.split('+')]
+            # we parse the commands
+            self.commands = [PrismCommand(c) for c in PrismAction.get_commands(commands)]
+            #self.commands = [PrismCommand(part.strip()) for part in commands.split('+')]
         else :
             self.label = ""
             self.guard = ""
             self.commands = []
+    
+    def get_commands(commands) :
+        """
+            it gets all the commands, parse 
+        """
+        result = []
+        init = 0
+        count = 0
+        input = commands.strip()
+        for i in range(len(input)) :
+            if input[i] == '(' :
+                count = count + 1
+            elif input[i] == ')' :
+                count = count - 1
+            elif input[i] == ';' : # last position
+                result.append(input[init:i])
+            elif (input[i] == '+')  and count == 0 :
+                result.append(input[init:i].strip())
+                init = i+1
+        return result
         
     def cross_product(self, action) :
         """
@@ -137,6 +159,8 @@ def test1() :
     pm2 = PrismModel(model2)
     print(str(pm2))
     print(str(pm1.cross_product(pm2)))
+
     
 if __name__ == "__main__" :
-    test1()
+    #test1()
+    print(PrismAction.get_commands("0.2:(s'=1) + 0.8:(s'=2);"))
