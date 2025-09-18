@@ -11,24 +11,32 @@ import NFA as nfa
 import sys, os, subprocess, csv, re, signal # needed for the system calls
 import traceback
 import re
+from pathlib import Path
 
 class ModelCheck(visitor.FormulaVisitor) :
     
-    def __init__(self, model, prism_path, file, verbosity=0) :
+    def __init__(self, model, prism_path, file, verbosity=0, plan=False, plan_path="") :
         """
             the constructor for this class:
-                model: it is a dictionary where:
+                model: this is a dictionary where:
                     model["plts"] = this contains the plts in prism notation
                     model["perceptions"] =  this contains a list of perceptions (NFAs)
+                prism_path: this is the path to prism
+                file: the file where the prism model is
+                verbosity: the verbosity level
+                plan: if a plan should be printed or not
+                plan_path: if a plan is requested a path to where to store the plan should passed
         """
         self.to_states = {} # this dictionary symbolically relates every subformula with the states that hold that formula
         self.model = model # model contains all the information about the model, the prism model and the perceptions as prism models
         self.prism_path = prism_path
         self.file = file # the file where the prism model is
         self.witness = "" # the witness for the property, if there is one
-        self.verbosity = verbosity
+        self.verbosity = verbosity # the verbosity level
+        self.plan = plan # if a plan should be obtained
+        self.plan_path = plan_path # the path where the plan where be saved
 
-    def __prism_call__(self, model, property) :
+    def __prism_call__(self, model, property, plan=False) :
         """
             Private method that calls prism and model checks property "property" in model "model"
         """
@@ -41,7 +49,12 @@ class ModelCheck(visitor.FormulaVisitor) :
             print(model)
             print(property)
         try :
-            result = subprocess.run([command, self.file, '-pf', property], capture_output=True).stdout.decode()
+            if not self.plan :
+                result = subprocess.run([command, self.file, '-pf', property], capture_output=True).stdout.decode()
+            else :
+                result = subprocess.run([command, self.file, "-pf", property, "-exportstrat", str(Path(self.plan_path) / "strat.txt"), "-exportstates", str(Path(self.plan_path) / "states.txt")], capture_output=True).stdout.decode()
+                #process = subprocess.Popen([command, self.file, "-pf", property, "-exportstrat", str(Path(self.plan_path) / "strat.txt"), "-exportstates", str(Path(self.plan_path) / "states.txt"),], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                #result, stderr = process.communicate()
             if (self.verbosity >= 5) :
                 print(result)
             for line in result.splitlines() :
@@ -59,6 +72,36 @@ class ModelCheck(visitor.FormulaVisitor) :
             traceback.print_exc()
         return row
 
+    def ___read_plan__(self) :
+        """
+            Reads a plan if one is requested
+        """
+        states = [] # a list to save the states, each state is repesented as a dictionary
+        try : 
+            with open(self.plan_path+'states.txt', "r") as file:
+                content = file.read()
+                start_line = content.splitlines()[0]
+                match = re.match(r"\((.*?)\)", start_line) # we extract the attributes from the tuples
+                if match:
+                    attributes = [p.strip() for p in match.group(1).split(",")]
+        except  :
+            print("Error reading the states file.")
+        
+
+        try : 
+            with open(self.plan_path+'strat.txt', "r") as file:
+                for line in file :
+                    state = {}
+                    match = re.match(r"\((.*?)\)\s*=\s*(.*)", line)
+                    values =  [p.strip() for p in match.group(1).split(",")]
+                    for att,val in zip(attributes, values) :
+                        if (att != "state") :
+                            state[att] = val
+                    state["action"] = match.group(2).strip()
+                    states.append(state)
+        except : 
+            print("Error reading the plan file.")
+        return states
 
     def get_states(self, property) :
         """ 
@@ -138,9 +181,6 @@ class ModelCheck(visitor.FormulaVisitor) :
 
             end_states = " | ".join([f"""state={perception.states_index[end_state]}""" for end_state in perception.accept_states])
             # we define the property
-            #property = f"""Pmin>={kh.lb}[F ({self.to_states[str(kh.right)]} & ({end_states}))] <= """
-            #property = f"""Pmin=?[F (state={perception.states_index[perception.trap_state]}) | ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb} & 
-            #Pmax=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>0"""
             property = f"""Pmin=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb}"""
 
             # we call the model checker
@@ -148,5 +188,7 @@ class ModelCheck(visitor.FormulaVisitor) :
             if output["result"] == "true" :
                 self.to_states[str(kh)] = "true"
                 self.witness = str(regex) # we save the regexp that makes true the property
-                break # a perception that makes true the formula is found
+                if (self.plan) : # if a plan was requested
+                    self.plan = self.___read_plan__()
+                break # a perception that makes true the formula was found
 

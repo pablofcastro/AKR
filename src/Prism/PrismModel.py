@@ -128,7 +128,7 @@ class PrismModel :
         result_model = PrismModel()
         result_model.name = "product"
         result_model.glob = self.glob + pmodel.glob
-        result_model.decl = self.decl + "\n" + pmodel.decl
+        result_model.decl = pmodel.decl + "\n" +  self.decl 
         for action_left in self.actions :
             for action_right in pmodel.actions :
                 new_action = action_left.cross_product(action_right)

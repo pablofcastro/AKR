@@ -5,7 +5,6 @@ import argparse, os
 import sys
 script_path = os.path.abspath(__file__)
 script_dir = os.path.dirname(script_path)
-print(script_dir)
 relative_file_path_parser = os.path.join(script_dir, 'Parser')
 relative_file_path_nfa = os.path.join(script_dir, 'NFA')
 #sys.path.insert(1, './Parser')
@@ -45,6 +44,8 @@ def main() :
                         help="The alphabet considered", metavar="ALPHABET")
     parser.add_argument("-pp", "--prism-path", dest="prism", required=False, type=str,
                         help="The path to prism tool, by default is ../prism/prism/", metavar="PRISMPATH")
+    parser.add_argument("-plan", "--plan", action="store_true", required=False, 
+                        help="Gets a plan, when possible")
     args = parser.parse_args()
 
     try :
@@ -118,15 +119,20 @@ def main() :
         # we create the file for the current preception
         #with open(spec_file_name, 'w') as f :
         #    f.write(spec['plts']+perception.toPrism())
-    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity)
+    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity, args.plan, "temp/")
     ast.property.accept(modelchecker)
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
     print("Property checked: "+str(ast.property))
     if (modelchecker.to_states[str(ast.property)] == "true") | (modelchecker.to_states[str(ast.property)] == "false") :
         print("The property is " + modelchecker.to_states[str(ast.property)])
-        if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) :
+        # if the propery is of type Kh we outputs the witness
+        if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) : 
             print("the witness is :" + modelchecker.witness)
+        if (args.plan) and (isinstance(ast.property, AST.Kh)) :
+            print("The plan is:")
+            for state in modelchecker.plan :
+                    print([key+'='+state[key] for key in state])
     else :
         print("The property holds in states:" + str(modelchecker.get_states(str(ast.property))))
     print("Time: "+str(elapsed_time))
