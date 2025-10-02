@@ -35,6 +35,7 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.verbosity = verbosity # the verbosity level
         self.plan = plan # if a plan should be obtained
         self.plan_path = plan_path # the path where the plan where be saved
+        self.computed_plan = []
 
     def __prism_call__(self, model, property, plan=False) :
         """
@@ -53,6 +54,7 @@ class ModelCheck(visitor.FormulaVisitor) :
                 result = subprocess.run([command, self.file, '-pf', property], capture_output=True).stdout.decode()
             else :
                 result = subprocess.run([command, self.file, "-pf", property, "-exportstrat", str(Path(self.plan_path) / "strat.txt"), "-exportstates", str(Path(self.plan_path) / "states.txt")], capture_output=True).stdout.decode()
+                #result = subprocess.run([command, self.file, "-pf", property, "-exportstrat",  "stdout", "-exportstates", "stdout"], capture_output=True).stdout.decode()
                 #process = subprocess.Popen([command, self.file, "-pf", property, "-exportstrat", str(Path(self.plan_path) / "strat.txt"), "-exportstates", str(Path(self.plan_path) / "states.txt"),], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                 #result, stderr = process.communicate()
             if (self.verbosity >= 5) :
@@ -189,6 +191,6 @@ class ModelCheck(visitor.FormulaVisitor) :
                 self.to_states[str(kh)] = "true"
                 self.witness = str(regex) # we save the regexp that makes true the property
                 if (self.plan) : # if a plan was requested
-                    self.plan = self.___read_plan__()
+                    self.computed_plan = self.___read_plan__()
                 break # a perception that makes true the formula was found
 

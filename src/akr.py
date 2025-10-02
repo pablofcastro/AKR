@@ -131,7 +131,7 @@ def main() :
             print("the witness is :" + modelchecker.witness)
         if (args.plan) and (isinstance(ast.property, AST.Kh)) :
             print("The plan is:")
-            for state in modelchecker.plan :
+            for state in modelchecker.computed_plan :
                     print([key+'='+state[key] for key in state])
     else :
         print("The property holds in states:" + str(modelchecker.get_states(str(ast.property))))
