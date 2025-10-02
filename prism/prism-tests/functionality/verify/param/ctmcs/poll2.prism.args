@@ -1,3 +1,0 @@
--param gamma=1:400
--const gamma=200 -exact
--const gamma=200 -ex -epsilon 1e-8

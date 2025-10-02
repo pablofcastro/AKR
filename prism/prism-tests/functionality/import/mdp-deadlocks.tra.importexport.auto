@@ -1,1 +1,0 @@
--importmodel mdp-deadlocks.tra -exportmodel mdp-deadlocks-fixed.tra,lab -ex

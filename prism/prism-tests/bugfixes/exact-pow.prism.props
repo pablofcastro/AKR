@@ -1,2 +1,0 @@
-// RESULT:Error:fractional (NB: would be 1/2)
-P=?[X s=1];

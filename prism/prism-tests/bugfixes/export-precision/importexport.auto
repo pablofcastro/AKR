@@ -1,7 +1,0 @@
-# Reduce precision for some tests due to minor differences between the engines
-
--exportmodelprecision 16 -importmodel rare.pm.all -exportmodel rare.pm.all
--exportmodelprecision 16 -importmodel rare.pm.all -exportmodel rare.pm.all -ex
-
--exportmodelprecision 16 -importmodel rare.nm.all -exportmodel rare.nm.all
--exportmodelprecision 16 -importmodel rare.nm.all -exportmodel rare.nm.all -ex

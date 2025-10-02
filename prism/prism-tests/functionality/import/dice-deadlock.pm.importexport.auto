@@ -1,2 +1,0 @@
--importmodel dice-deadlock.tra,lab -exportmodel dice-deadlock.tra,lab
--importmodel dice-deadlock.tra,lab -exportmodel dice-deadlock.tra,lab -ex
