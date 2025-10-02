@@ -35,3 +35,4 @@ tests/.DS_Store
 tests/hotel/.DS_Store
 tests/hotel/cases/.DS_Store
 tests/hotel/generator/.DS_Store
+src/temp/model.prism
