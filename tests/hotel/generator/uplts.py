@@ -56,7 +56,7 @@ def plts(doors,probabilities):
     result += f"{command(doors,source=1,target=3,probability=probabilities[3])}"
 
     result += f"{command(doors,source=2,target=1,probability=probabilities[1])}"
-    result += f"{command(doors,source=2,target=3,probability=probabilities[3])}"
+    result += f"{command(doors,source=2,target=4,probability=probabilities[4])}"
 
     for door in range(3,doors-1):
 
