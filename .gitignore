@@ -27,3 +27,11 @@ __pycache__/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+.DS_Store
+src/.DS_Store
+src/NFA/__pycache__/NFA.cpython-311.pyc
+src/NFA/__pycache__/regex_visitor.cpython-311.pyc
+tests/.DS_Store
+tests/hotel/.DS_Store
+tests/hotel/cases/.DS_Store
+tests/hotel/generator/.DS_Store
