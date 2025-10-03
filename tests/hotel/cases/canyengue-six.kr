@@ -40,7 +40,7 @@ plts:
 endplts
 
 perception :
-    (one.three.five.six.four.two)*+(two.four.six.five.three.one)*
+    ((one.two)*+(two.one)*).((three.four)*+(four.three)*).((five.six)*+(six.five)*)
 endperception
 
 property : Kh(launch,complete) >= 0.1

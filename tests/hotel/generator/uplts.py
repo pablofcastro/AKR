@@ -92,7 +92,7 @@ def kh(success):
 
     return result
 
-def canyengue(doors):
+def salon(doors):
 
     result = ""
 
@@ -103,7 +103,7 @@ def canyengue(doors):
 
     return result
 
-def salon(doors):
+def canyengue(doors):
 
     result = []
 
