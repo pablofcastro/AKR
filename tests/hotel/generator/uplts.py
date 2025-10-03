@@ -92,7 +92,7 @@ def kh(success):
 
     return result
 
-def tango(doors):
+def canyengue(doors):
 
     result = ""
 
@@ -103,7 +103,7 @@ def tango(doors):
 
     return result
 
-def pericon(doors):
+def salon(doors):
 
     result = []
 
@@ -114,7 +114,7 @@ def pericon(doors):
 
     return result
 
-def zamba(doors):
+def milonga(doors):
 
     result = ""
 
@@ -146,12 +146,12 @@ def perception(doors, mode):
 
     result  = "perception :\n    "
 
-    if mode == "tango":
-        result += tango(doors)
-    elif mode == "pericon":
-        result += pericon(doors)
-    elif mode == "zamba":
-        result += zamba(doors)
+    if mode == "canyengue":
+        result += canyengue(doors)
+    elif mode == "salon":
+        result += salon(doors)
+    elif mode == "milonga":
+        result += milonga(doors)
 
     result += "\nendperception\n\n"
 

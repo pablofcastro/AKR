@@ -24,4 +24,4 @@ if __name__ == '__main__':
 
     else:
         print(f'error: incorrect number of arguments for {argv[0]}')
-        print(f'  use: {argv[0]} <success:float> <prob1:float> <prob2:float> ... <probn:float> tango|pericon|zamba')
+        print(f'  use: {argv[0]} <success:float> <prob1:float> <prob2:float> ... <probn:float> canyengue|salon|milonga')
