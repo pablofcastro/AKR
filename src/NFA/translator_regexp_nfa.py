@@ -4,10 +4,10 @@
 """
 import sys
 sys.path.insert(1, '../Parser')
-import AST
-import parser_regex as parser
-import regex_visitor as visitor
-import NFA as nfa
+import Parser.AST
+import Parser.parser_regex as parser
+import NFA.regex_visitor as visitor
+import NFA.NFA as nfa
 from lark import Lark, Transformer, v_args
 
 

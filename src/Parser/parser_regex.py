@@ -4,7 +4,7 @@ It is useful for manipulating RE and transform them to automata
 """
 
 import logging
-import AST as ast
+import Parser.AST as ast
 from lark import Lark, Transformer, v_args
 logging.basicConfig(level=logging.DEBUG)
 

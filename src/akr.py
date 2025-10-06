@@ -2,18 +2,20 @@
     Main script the AKR tool
 """
 import argparse, os
+from pathlib import Path
 import sys
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-relative_file_path_parser = os.path.join(script_dir, 'Parser')
-relative_file_path_nfa = os.path.join(script_dir, 'NFA')
+#script_path = os.path.abspath(__file__)
+#parent_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), os.pardir, 'prism'))
+#script_dir = os.path.dirname(script_path)
+#relative_file_path_parser = os.path.join(script_dir, 'Parser')
+#relative_file_path_nfa = os.path.join(script_dir, 'NFA')
 #sys.path.insert(1, './Parser')
-sys.path.insert(1, relative_file_path_parser)
+#sys.path.insert(1, relative_file_path_parser)
 #sys.path.insert(1, './NFA')
-sys.path.insert(1, relative_file_path_nfa)
-import AST
-import parser as model_parser
-import translator_regexp_nfa as translator
+#sys.path.insert(1, relative_file_path_nfa)
+import Parser.AST as AST
+import Parser.parser as model_parser
+import NFA.translator_regexp_nfa as translator
 import MC as mc
 import time
 import subprocess
@@ -33,9 +35,19 @@ def main() :
         + --file (-f): process a file
     """
     verbosity = 0 # the verbosity level, it is useful for testing
-    prism_path = "../prism/prism"
+
+    # we set a default folder for prism, this is done using relative path and the pathlib library
+    current_file = Path(__file__).resolve()
+    # Go to the parent directory of the script, then navigate to ../prism/prism
+    prism_path = str((current_file.parent / "../prism/prism").resolve())
+    #prism_path = "../prism/prism"
+    
+    #similarly for the temp folder
+    temp_path = str((current_file.parent / "temp/").resolve())
+    spec_file_name = temp_path+'model.prism'
+    #spec_file_name = "temp/model.prism" # this is the file where the model is stored,
+
     parser = argparse.ArgumentParser()
-    spec_file_name = "temp/model.prism" # this is the file where the model is stored,
     # create the arguments for the command line  
     parser.add_argument("-v", "--verbose", help="Increase output verbosity", dest="verbosity", type=int, metavar="VERBOSITY")
     parser.add_argument("-i", "--input", dest="file", required=True, type=validate_file,
@@ -77,8 +89,8 @@ def main() :
         sys.exit(1)
 
     try :
-        if not os.path.exists("temp"):
-            os.mkdir("temp")
+        if not os.path.exists(temp_path):
+            os.mkdir(temp_path)
     except :
         print("Error creating the folder temp.")
         sys.exit(1)
@@ -119,7 +131,7 @@ def main() :
         # we create the file for the current preception
         #with open(spec_file_name, 'w') as f :
         #    f.write(spec['plts']+perception.toPrism())
-    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity, args.plan, "temp/")
+    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity, args.plan, temp_path)
     ast.property.accept(modelchecker)
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
@@ -129,7 +141,7 @@ def main() :
         # if the propery is of type Kh we outputs the witness
         if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) : 
             print("the witness is :" + modelchecker.witness)
-        if (args.plan) and (isinstance(ast.property, AST.Kh)) :
+        if (args.plan) and (isinstance(ast.property, ast.Kh)) :
             print("The plan is:")
             for state in modelchecker.computed_plan :
                     print([key+'='+state[key] for key in state])

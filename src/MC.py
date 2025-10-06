@@ -4,9 +4,9 @@
 import sys
 sys.path.insert(1, './Parser')
 sys.path.insert(1, './Prism')
-import AST
-import PrismModel as prism
-import form_visitor as visitor
+import Parser.AST
+import Prism.PrismModel as prism
+import Parser.form_visitor as visitor
 import NFA as nfa
 import sys, os, subprocess, csv, re, signal # needed for the system calls
 import traceback

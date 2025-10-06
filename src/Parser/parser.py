@@ -13,7 +13,7 @@ The preception part is defined as a sequence of regular expressions
 """
 
 import logging
-import AST as ast
+import Parser.AST as ast
 from lark import Lark, Transformer, v_args
 logging.basicConfig(level=logging.DEBUG)
 
