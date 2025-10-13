@@ -1,5 +1,16 @@
 from num2words import num2words
 
+def num_to_camel(n):
+    # Get the words from num2words (default is English)
+    words = num2words(n)
+    # Remove punctuation and split into words
+    parts = words.replace('-', ' ').replace(',', '').split()
+    # Convert to camelCase or PascalCase
+    return parts[0].lower() + ''.join(word.capitalize() for word in parts[1:])
+
+def repeat_with_dots(s, k) :
+    return ".".join([s] * k)
+
 def preamble(doors):
 
     result  = "plts:\n"
@@ -29,7 +40,7 @@ def init(doors):
 def command(doors, source, target, probability):
 
     result  = "        "
-    result += f"[{num2words(target)}] " # action
+    result += f"[{num_to_camel(target)}] " # action
     result += f"(s={source}) -> "       # guard
     result += f"{probability:.2f}:(s'={target})&(c'=min({doors},c+(1-v{target})))&(v{target}'=1) + " # prob: update
     result += f"{(1-probability):.2f}:(s'={target})&(c'=c)&(v{target}'=1);\n" # prob: update
@@ -92,29 +103,29 @@ def kh(success):
 
     return result
 
-def tango(doors):
+def salon(doors):
 
     result = ""
 
-    path  = [ num2words(door) for door in range(1,doors+1,2) ]
-    path += [ num2words(door) for door in reversed(range(2,doors+1,2)) ]
+    path  = [ num_to_camel(door) for door in range(1,doors+1,2) ]
+    path += [ num_to_camel(door) for door in reversed(range(2,doors+1,2)) ]
 
     result  = "("+".".join(path)+")*+("+".".join(reversed(path))+")*"
 
     return result
 
-def pericon(doors):
+def canyengue(doors, k):
 
     result = []
-
     for door in range(1,doors,2):
-        result += [f"(({num2words(door)}.{num2words(door+1)})*+({num2words(door+1)}.{num2words(door)})*)"]
-
+        #result += [f"(({num_to_camel(door)}.{num_to_camel(door+1)})*+({num_to_camel(door+1)}.{num_to_camel(door)})*)"]
+        result += [f"""(({repeat_with_dots(f"{num_to_camel(door)}.{num_to_camel(door+1)}", k)})+({repeat_with_dots(f"{num_to_camel(door+1)}.{num_to_camel(door)}", k)}))"""]
+       
     result  = ".".join(result)
 
     return result
 
-def zamba(doors):
+def milonga(doors):
 
     result = ""
 
@@ -124,7 +135,7 @@ def zamba(doors):
 
     for cursor in range(0,doors-1):
         room += 2 if (cursor % 2) else flip
-        path += [f"{num2words(room)}"]
+        path += [f"{num_to_camel(room)}"]
         flip  = (-1*flip) if (cursor % 2) else flip
     
     result  = "("+".".join(path)+")+"
@@ -135,23 +146,25 @@ def zamba(doors):
 
     for cursor in range(0,doors-1):
         room += 2 if (cursor % 2) else flip
-        path += [f"{num2words(room)}"]
+        path += [f"{num_to_camel(room)}"]
         flip  = (-1*flip) if (cursor % 2) else flip
 
     result  += "("+".".join(path)+")"
 
     return result
 
-def perception(doors, mode):
-
+def perception(doors, mode, k=4):
+    """
+        A function to generate the perception, the k parameter is for canyengue
+    """
     result  = "perception :\n    "
 
-    if mode == "tango":
-        result += tango(doors)
-    elif mode == "pericon":
-        result += pericon(doors)
-    elif mode == "zamba":
-        result += zamba(doors)
+    if mode == "canyengue":
+        result += canyengue(doors, k)
+    elif mode == "salon":
+        result += salon(doors)
+    elif mode == "milonga":
+        result += milonga(doors)
 
     result += "\nendperception\n\n"
 

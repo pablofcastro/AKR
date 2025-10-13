@@ -137,7 +137,9 @@ def main() :
     elapsed_time = end_time - start_time
     print("Property checked: "+str(ast.property))
     if (modelchecker.to_states[str(ast.property)] == "true") | (modelchecker.to_states[str(ast.property)] == "false") :
-        print("The property is " + modelchecker.to_states[str(ast.property)])
+        print("The property is: " + modelchecker.to_states[str(ast.property)])
+        print(f"Maximum number of states: {modelchecker.max_states}")
+        print(f"Maximum number of trans: {modelchecker.max_trans}")
         # if the propery is of type Kh we outputs the witness
         if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) : 
             print("the witness is :" + modelchecker.witness)

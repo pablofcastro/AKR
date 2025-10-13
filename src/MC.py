@@ -36,6 +36,8 @@ class ModelCheck(visitor.FormulaVisitor) :
         self.plan = plan # if a plan should be obtained
         self.plan_path = plan_path # the path where the plan where be saved
         self.computed_plan = []
+        self.max_trans = 0
+        self.max_states = 0
 
     def __prism_call__(self, model, property, plan=False) :
         """
@@ -62,9 +64,9 @@ class ModelCheck(visitor.FormulaVisitor) :
             for line in result.splitlines() :
                 words = line.split()
                 if line.startswith("States") : 
-                    row["states"] = words[1]
+                    row["states"] = int(words[1])
                 elif line.startswith("Transitions") : 
-                    row["transitions"] = words[1]
+                    row["transitions"] = int(words[1])
                 elif line.startswith("Result") : 
                     row["result"] = words[1]
                 elif line.startswith("Time") :
@@ -184,9 +186,11 @@ class ModelCheck(visitor.FormulaVisitor) :
             end_states = " | ".join([f"""state={perception.states_index[end_state]}""" for end_state in perception.accept_states])
             # we define the property
             property = f"""Pmin=?[F ({self.to_states[str(kh.right)]} & ({end_states}))]>={kh.lb}"""
-
+            
             # we call the model checker
             output = self.__prism_call__(model, property)
+            self.max_states = max(output["states"], self.max_states)
+            self.max_trans = max(output["transitions"], self.max_trans)
             if output["result"] == "true" :
                 self.to_states[str(kh)] = "true"
                 self.witness = str(regex) # we save the regexp that makes true the property
