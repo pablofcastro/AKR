@@ -18,14 +18,12 @@ The tool can be either **manually** or **automatically** using the provided *ins
 
 ---
 
-## Requirements
-
-Before installing, you meet the following requirements:
-
-### Software Dependencies
+## Software Dependencies
 - Python 3.8 or higher  
 - [Lark parsing toolkit](https://github.com/lark-parser/lark)
 - PRISM Model Checker (installed manually or via `install.sh`)
+
+Most of them are provided with the tool.
 
 ---
 
