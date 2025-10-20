@@ -82,7 +82,7 @@ class ModelCheck(visitor.FormulaVisitor) :
         """
         states = [] # a list to save the states, each state is repesented as a dictionary
         try : 
-            with open(self.plan_path+'states.txt', "r") as file:
+            with open(self.plan_path+'/states.txt', "r") as file:
                 content = file.read()
                 start_line = content.splitlines()[0]
                 match = re.match(r"\((.*?)\)", start_line) # we extract the attributes from the tuples
@@ -93,7 +93,7 @@ class ModelCheck(visitor.FormulaVisitor) :
         
 
         try : 
-            with open(self.plan_path+'strat.txt', "r") as file:
+            with open(self.plan_path+'/strat.txt', "r") as file:
                 for line in file :
                     state = {}
                     match = re.match(r"\((.*?)\)\s*=\s*(.*)", line)

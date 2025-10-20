@@ -39,7 +39,7 @@ def main() :
     # we set a default folder for prism, this is done using relative path and the pathlib library
     current_file = Path(__file__).resolve()
     # Go to the parent directory of the script, then navigate to ../prism/prism
-    prism_path = str((current_file.parent / "../prism/prism").resolve())
+    prism_path = str((current_file.parent / "../prism").resolve())
     #prism_path = "../prism/prism"
     
     #similarly for the temp folder
@@ -56,8 +56,8 @@ def main() :
                         help="The alphabet considered", metavar="ALPHABET")
     parser.add_argument("-pp", "--prism-path", dest="prism", required=False, type=str,
                         help="The path to prism tool, by default is ../prism/prism/", metavar="PRISMPATH")
-    parser.add_argument("-plan", "--plan", action="store_true", required=False, 
-                        help="Gets a plan, when possible")
+    parser.add_argument("-strat", "--strat", action="store_true", required=False, 
+                        help="Gets a compatible strategy, when possible")
     args = parser.parse_args()
 
     try :
@@ -131,7 +131,7 @@ def main() :
         # we create the file for the current preception
         #with open(spec_file_name, 'w') as f :
         #    f.write(spec['plts']+perception.toPrism())
-    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity, args.plan, temp_path)
+    modelchecker = mc.ModelCheck(spec, prism_path, spec_file_name, verbosity, args.strat, temp_path)
     ast.property.accept(modelchecker)
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
@@ -143,10 +143,10 @@ def main() :
         # if the propery is of type Kh we outputs the witness
         if (modelchecker.to_states[str(ast.property)] == "true") and (isinstance(ast.property, AST.Kh)) : 
             print("the witness is :" + modelchecker.witness)
-        if (args.plan) and (isinstance(ast.property, ast.Kh)) :
-            print("The plan is:")
-            for state in modelchecker.computed_plan :
-                    print([key+'='+state[key] for key in state])
+            if (args.strat) and (isinstance(ast.property, AST.Kh)) :
+                print("The compatible strategy is:")
+                for state in modelchecker.computed_plan :
+                        print([key+'='+state[key] for key in state])
     else :
         print("The property holds in states:" + str(modelchecker.get_states(str(ast.property))))
     print("Time: "+str(elapsed_time))
