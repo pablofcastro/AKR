@@ -49,7 +49,7 @@ sudo ./install.sh
 ```
 (root privileges are needed for installing lark). 
 
-*** If you are using another operating system, please follow the Manual Installation instructions at the end of this document.***
+** If you are using another operating system, please follow the Manual Installation instructions at the end of this document.**
 
 # Running the tool
 
@@ -120,7 +120,7 @@ the specification for this example can be found in folder ```fire-emergency/```.
 
 # Manual Installation
 
-*** Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section. ***
+** Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section. **
 
 Assuming you are in the main folder of the distribution, follow these steps.
 
