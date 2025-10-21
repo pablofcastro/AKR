@@ -4,7 +4,7 @@ This is the artifact corresponding to the paper:
 
 *AKR: A Model Checker for an Adaptative Probabilistic Knowing-How Logic*
 
-submitte to TACAS 2026.
+submitted to TACAS 2026.
 
 This tool implements the algorithm of model checking as described in: 
 
@@ -20,16 +20,16 @@ of perceptions.
 
 # Installing the tool in TACAS Virtual Machine
 
-The tool can be installed in TACAS Virtual Machine (in Intel/AMD 64bit or ARM 64) all the dependecies are incluided in the given .zip files:
+The tool can be installed in the TACAS Virtual Machine (running in  an Intel/AMD 64 bit or an ARM 64 bit processor) all the dependecies are incluided in the given .zip file:
 
 - [Lark parsing toolkit](https://github.com/lark-parser/lark)
 - PRISM Model Checker (installed manually or via `install.sh`)
 
-The tool is written in python, the TACAS virtual Machine already installed Python.
+The tool is entirely written in Python, the TACAS virtual Machine already has a Python interpreter installed.
 
 To install the tool in the TACAS virtual Machine proceed as follows
 
-## 1. Download the .zip file from zenodo
+## 1. Download the .zip file from Zenodo
 
 ## 2. Unzip de file
 
@@ -38,9 +38,10 @@ This can be done using the command `zip`:
 ```
 unzip akr.zip
 ```
+
 this will create the folder `akr/` where the sources and executables for the tool are located.
 
-# 2. Run the *install.sh*
+## 3. Run the *install.sh*
 
 To install, run the command for the main directory of the tool:
 ```
@@ -50,10 +51,9 @@ sudo ./install.sh
 
 *** If you are using another operating system, please follow the Manual Installation instructions at the end of this document.***
 
-
 # Running the tool
 
-After installation, you can run the tool from the main tool folder as follows:
+After installation, you can execute the tool from the main tool folder as follows:
 
 ```
 cd src/
@@ -75,15 +75,15 @@ This model checks the specification `fire_emerg_1.kr`.
 
 The files of the benchmark presented in the paper are located in the folder `tests/hotel/benchmark`.
 
-To run the tool over the benchmark and replicate the results you can execute the script `evaluate_benchmark.py` from the 
-`tests/hotel/generator` folder. More precisely, from the main tool folder you have to execute the following commands:
+To run the tool over the benchmark and replicate the results you have to execute the script `evaluate_benchmark.py` located in folder 
+`tests/hotel/generator`. More precisely, from the main tool folder you have to execute the following commands:
 
 ```
 cd tests/hotel/generator
 python3 evaluate_benchmark.py
 ```
 
-This will model check all the files and save the results in a file `output.csv`
+This will model check all the benchmark files and save the results in a file `output.csv`
 
 
 ## Generating the plots
@@ -98,28 +98,25 @@ This will create .jpg plot files corresponding to the data in output.csv.
 
 ## Generating all the benchmark again
 
-If you want to generate again the benchmark 
-From the main folder execute:
+If you want to generate again the benchmark, from the main folder execute:
 
 ```
 cd tests/hotel/generator
 python3  benchmark_generator.py
 ```
 
-This generates new files using random number generator for defining the actions probabilities, that is, the files generated could be different from the one provided
-in the distribution.
+This generates new files, the script uses a random number generator for creating actions probabilities, that is, the files generated could be different from the one provided in the distribution.
 
-All generated files will appear under `tests/hotel/benchmark/`.
-
+All generated files will appear in the folder: `tests/hotel/benchmark/`.
 
 ##  Fire emergency Example
 
-This is the example described in 
+This is another example described in the paper:
 
 *How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
 Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
-the specification for this example can be found in folder ```fire-emergency/```
+the specification for this example can be found in folder ```fire-emergency/```.
 
 # Manual Installation
 
