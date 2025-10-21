@@ -118,6 +118,41 @@ Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
 the specification for this example can be found in folder ```fire-emergency/```.
 
+# The specification file
+
+The input of the model checker consists of a specification, it is made of three parts:
+
+* A PRISM model describing a MDP,
+* A list of perceptions, described as regular expressions,
+* A AKR property to be checked.
+
+The following is a simple example of specification:
+
+```
+plts: 
+    module mymodel:
+        v : bool; 
+        [a] v = false -> 0.5:(v'=true) + 0.5:(v'=false); 
+        [b] v = true -> 0.1:(v'=true) + 0.9:(v'=false); 	
+    endmodule
+endplts
+
+perception : a*;(a+b)
+endperception
+
+property : Kh(!v,v) >= 0.5
+endproperty 
+```
+
+By default the tool infers the alphabet from the regular expressions. For instance, in the example above the alphabet deducted from the regular expressions is {a,b}. You can override this manually:
+
+```
+python src/akr.py -i mymodel.kr -a a,b,c
+```
+
+It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note that the used alphabet may have an impact in the verification.
+
+
 # Manual Installation
 
 ** Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section. **
@@ -157,26 +192,6 @@ Install the Lark parser using `pip3`:
 pip3 install lark
 ```
 
-# Running the tool
-
-## Running the tool 
-
-After installation, you can run the tool from the main tool folder as follows:
-
-```
-cd src/
-python3 akr.py -i <mymodel>
-``` 
-
-where ```<mymodel>``` is a specification file. To test the tool execute:
-
-```
-python akr.py -i ../tests/fire-emergency/fire_emerg_1.kr 
-```
-
-from the src folder.
-
-
 ## Running the tool using an installed version of PRISM
 
 You can also run the tool using an already installed version of PRISM by specifying its path:
@@ -188,46 +203,6 @@ python akr.py -i <mymodel> -pp <prism-path>
 where:
 * <prism-path> -- path to your PRISM installation,
 * <mymodel> -- specification file.
-
-
-# The specification file
-
-The input of the model checker consists of a specification, it is made of three parts:
-
-* A PRISM model describing a MDP,
-* A list of perceptions, described as regular expressions,
-* A AKR property to be checked.
-
-The following is a simple example of specification:
-
-```
-plts: 
-    module mymodel:
-        v : bool; 
-        [a] v = false -> 0.5:(v'=true) + 0.5:(v'=false); 
-        [b] v = true -> 0.1:(v'=true) + 0.9:(v'=false); 	
-    endmodule
-endplts
-
-perception : a*;(a+b)
-endperception
-
-property : Kh(!v,v) >= 0.5
-endproperty 
-```
-
-By default the tool infers the alphabet from the regular expressions. For instance, in the example above the alphabet deducted from the regular expressions is {a,b}. You can override this manually:
-
-```
-python src/akr.py -i mymodel.kr -a a,b,c
-```
-
-It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note that the used alphabet may have an impact in the verification.
-
-
-
-
-
 
 
 
