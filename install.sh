@@ -6,7 +6,7 @@
 set -e
 
 # Define the folder and .deb file name
-DEB_DIR="/packages"  # folder containing lark
+DEB_DIR="./packages"  # folder containing lark
 DEB_FILE="python3-lark_1.1.9-1_all.deb"  # Replace with your actual .deb filename
 
 

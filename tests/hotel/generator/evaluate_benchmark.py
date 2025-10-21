@@ -18,7 +18,7 @@ if __name__ == "__main__" :
             instance_path = os.path.join(f"../benchmark/{mode}", file)
             print(f"Ejecutando: python -i akr.py {instance_path}")
             try :
-                output = subprocess.run(["python", "../../../src/akr.py", "-i", instance_path], capture_output=True).stdout.decode()
+                output = subprocess.run(["python3", "../../../src/akr.py", "-i", instance_path], capture_output=True).stdout.decode()
                 lines = output.splitlines()
                 for line in lines :
                     if line.startswith("Time") :

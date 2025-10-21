@@ -47,7 +47,7 @@ To install, run the command for the main directory of the tool:
 ```
 sudo ./install.sh
 ```
-(root privileges are needed for installing lark). 
+(root privileges are needed for installing lark). The script works for any linux distribution (e.g., Ubuntu) running on a INTEL/AMD 64 bits or ARM 64 bits processor.
 
 ***If you are using another operating system, please follow the Manual Installation instructions at the end of this document.***
 
@@ -116,7 +116,7 @@ This is another example described in the paper:
 *How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
 Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
-the specification for this example can be found in folder ```fire-emergency/```.
+the specification for this example can be found in folder ```tests/fire-emergency/```.
 
 # The specification file
 
@@ -155,7 +155,7 @@ It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note
 
 # Manual Installation
 
-** Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section. **
+***Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section.***
 
 Assuming you are in the main folder of the distribution, follow these steps.
 
