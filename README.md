@@ -1,49 +1,129 @@
 # AKR: A Model Checker for an Adaptative Knowing-How Probabilistic Logic with Regular Expression Perceptions
 
-This tool implements the algorithm of model checking described in: 
+This is the artifact corresponding to the paper:
+
+*AKR: A Model Checker for an Adaptative Probabilistic Knowing-How Logic*
+
+submitte to TACAS 2026.
+
+This tool implements the algorithm of model checking as described in: 
 
 *How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
 Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
-The logic is described in the paper but it mainly implement an algorithm to check formulas of the type:  
+That is, the tool allows on to model check formulas of type:
 
 Kh(A,B) >= Q  
 
 Intuitively, it says that an agent knows how to satisfy B from A, given a collection 
 of perceptions.
 
-# Installing the tool
+# Installing the tool in TACAS Virtual Machine
 
-The tool can be either **manually** or **automatically** using the provided *install.sh* script (see below). 
+The tool can be installed in TACAS Virtual Machine (in Intel/AMD 64bit or ARM 64) all the dependecies are incluided in the given .zip files:
 
----
-
-## Software Dependencies
-- Python 3.8 or higher  
 - [Lark parsing toolkit](https://github.com/lark-parser/lark)
 - PRISM Model Checker (installed manually or via `install.sh`)
 
-Most of them are provided with the tool.
+The tool is written in python, the TACAS virtual Machine already installed Python.
 
----
+To install the tool in the TACAS virtual Machine proceed as follows
 
-## Installing the tool using *install.sh*
+## 1. Download the .zip file from zenodo
 
-The `install.sh` script provides an easy installation method for:
+## 2. Unzip de file
 
-- **Linux (Ubuntu 20.04 or later)** — Intel or ARM processors
+This can be done using the command `zip`:
 
-To install, run the command:
+```
+unzip akr.zip
+```
+this will create the folder `akr/` where the sources and executables for the tool are located.
+
+# 2. Run the *install.sh*
+
+To install, run the command for the main directory of the tool:
 ```
 sudo ./install.sh
 ```
 (root privileges are needed for installing lark). 
 
-If you are using another operating system, please follow the Manual Installation instructions below.
+*** If you are using another operating system, please follow the Manual Installation instructions at the end of this document.***
 
-## Manual Installation
 
-If you already used the file *install.sh*, you can skip this section. 
+# Running the tool
+
+After installation, you can run the tool from the main tool folder as follows:
+
+```
+cd src/
+python3 akr.py -i <mymodel>
+``` 
+
+where ```<mymodel>``` is a specification file. 
+
+For example, to test the tool execute (from the src folder):
+
+```
+cd src/
+python akr.py -i ../tests/fire-emergency/fire_emerg_1.kr 
+```
+
+This model checks the specification `fire_emerg_1.kr`.
+
+## Running the Benchmark
+
+The files of the benchmark presented in the paper are located in the folder `tests/hotel/benchmark`.
+
+To run the tool over the benchmark and replicate the results you can execute the script `evaluate_benchmark.py` from the 
+`tests/hotel/generator` folder. More precisely, from the main tool folder you have to execute the following commands:
+
+```
+cd tests/hotel/generator
+python3 evaluate_benchmark.py
+```
+
+This will model check all the files and save the results in a file `output.csv`
+
+
+## Generating the plots
+
+To generate the plots again run the following command:
+```
+cd tests/hotel/generator
+python3 generate_plots.py
+```
+
+This will create .jpg plot files corresponding to the data in output.csv.
+
+## Generating all the benchmark again
+
+If you want to generate again the benchmark 
+From the main folder execute:
+
+```
+cd tests/hotel/generator
+python3  benchmark_generator.py
+```
+
+This generates new files using random number generator for defining the actions probabilities, that is, the files generated could be different from the one provided
+in the distribution.
+
+All generated files will appear under `tests/hotel/benchmark/`.
+
+
+##  Fire emergency Example
+
+This is the example described in 
+
+*How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
+Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
+
+the specification for this example can be found in folder ```fire-emergency/```
+
+# Manual Installation
+
+*** Follow the instructions in this section only if you want to install the tool NOT USING the script install.sh, otherwise you can skip this section. ***
 
 Assuming you are in the main folder of the distribution, follow these steps.
 
@@ -147,66 +227,8 @@ python src/akr.py -i mymodel.kr -a a,b,c
 
 It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note that the used alphabet may have an impact in the verification.
 
-# Examples
-
-In the folder ```tests/```you can find two examples.
-
-##  Fire emergency
-
-This is the example described in 
-
-*How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
-Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
-
-the specification for the example can be found in folder ```fire-emergency/```
-
-## Tango robot
-
-In this example, a cleaning robot *Tango*  has to clean several rooms in a corridor. 
-
-See tests/hotel/README.md for full details.
 
 
-This folder includes:
-
-* `tests/hotel/benchmark/`-- several instances for the modes milonga, canyengue, and salon
-
-* `tests/hotel/generator/benchmark_generator.py` -- generates the instances
-
-* `tests/hotel/generator/evaluate_benchmark.py` -- runs the tool on all instances and saves results to output.csv
-
-* `tests/hotel/generator/generate_plots.py` -- generates .jpg plots from the results
-
-### Regenrating all the instances
-
-From the main folder execute:
-
-```
-cd tests/generator
-python3  benchmark_generator.py
-```
-
-All generated files will appear under `tests/hotel/benchmark/`.
-
-### Running the Tool on all Instances
-From the main folder execute:
-
-```
-cd tests/generator
-python3 evaluate_benchmark.py
-```
-
-his will produce an `output.csv` file with the verification results.
-
-### GEnerating the plots 
-
-To generate the plots again run the following command:
-```
-cd tests/generator
-python3 generate_plots.py
-```
-
-This will create .jpg plot files corresponding to the data in output.csv.
 
 
 
