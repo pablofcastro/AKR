@@ -49,7 +49,7 @@ sudo ./install.sh
 ```
 (root privileges are needed for installing lark). 
 
-** If you are using another operating system, please follow the Manual Installation instructions at the end of this document.**
+***If you are using another operating system, please follow the Manual Installation instructions at the end of this document.***
 
 # Running the tool
 
