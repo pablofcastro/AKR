@@ -33,7 +33,11 @@ To install the tool in the TACAS virtual Machine proceed as follows
 
 ## 1. Download the .zip file from Zenodo
 
-## 2. Unzip de file
+A .zip file containing the tool can be downloaded from:
+
+
+
+## 2. Unzip the file
 
 This can be done using the command `zip`:
 
