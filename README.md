@@ -36,14 +36,19 @@ To install the tool in the TACAS virtual Machine proceed as follows
 This can be done using the command `zip`:
 
 ```
-unzip akr.zip
+unzip artifact.zip
 ```
 
-this will create the folder `akr/` where the sources and executables for the tool are located.
+this will create the folder `AKR-artifact/` where the sources and executables for the tool are located.
 
 ## 3. Run the *install.sh*
 
-To install, run the command for the main directory of the tool:
+To install the tool, first move the main tool directory:
+
+```
+cd AKR-artifact
+```
+then run the command for the main directory of the tool:
 ```
 sudo ./install.sh
 ```
@@ -66,12 +71,12 @@ For example, to test the tool execute (from the src folder):
 
 ```
 cd src/
-python akr.py -i ../tests/fire-emergency/fire_emerg_1.kr 
+python akr.py -i ../tests/hotel/example-fig-4.kr 
 ```
 
-This model checks the specification `fire_emerg_1.kr`.
+This model checks the specification of `example-fig-4.kr` and outputs the results of the verification as shown in the Figure 4 of the paper.
 
-## Running the Benchmark
+## Running the benchmark
 
 The files of the benchmark presented in the paper are located in the folder `tests/hotel/benchmark`.
 
@@ -109,7 +114,8 @@ This generates new files, the script uses a random number generator for creating
 
 All generated files will appear in the folder: `tests/hotel/benchmark/`.
 
-##  Fire emergency Example
+
+##  Fire emergency example
 
 This is another example described in the paper:
 
