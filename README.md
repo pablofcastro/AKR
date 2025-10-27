@@ -15,8 +15,7 @@ That is, the tool allows on to model check formulas of type:
 
 Kh(A,B) >= Q  
 
-Intuitively, it says that an agent knows how to satisfy B from A, given a collection 
-of perceptions.
+Intuitively, it says that an agent knows how to satisfy B from A, given a  perception captured by means of a collection of regular expressions.
 
 # Installing the tool in TACAS Virtual Machine
 
@@ -41,12 +40,15 @@ unzip artifact.zip
 
 this will create the folder `AKR-artifact/` where the sources and executables for the tool are located.
 
+***In the following steps, we assume `<tool-folder> = /path/to/AKR-artifact` is the folder where the tool is located***
+
+
 ## 3. Run the *install.sh*
 
 To install the tool, first move the main tool directory:
 
 ```
-cd AKR-artifact
+cd <tool-folder>
 ```
 then run the command for the main directory of the tool:
 ```
@@ -61,7 +63,7 @@ sudo ./install.sh
 After installation, you can execute the tool from the main tool folder as follows:
 
 ```
-cd src/
+cd <tool-folder>/src/
 python3 akr.py -i <mymodel>
 ``` 
 
@@ -70,7 +72,7 @@ where ```<mymodel>``` is a specification file.
 For example, to test the tool execute (from the src folder):
 
 ```
-cd src/
+cd <tool-folder>/src/
 python akr.py -i ../tests/hotel/example-fig-4.kr 
 ```
 
@@ -84,7 +86,7 @@ To run the tool over the benchmark and replicate the results you have to execute
 `tests/hotel/generator`. More precisely, from the main tool folder you have to execute the following commands:
 
 ```
-cd tests/hotel/generator
+cd <tool-folder>/tests/hotel/generator
 python3 evaluate_benchmark.py
 ```
 
@@ -95,7 +97,7 @@ This will model check all the benchmark files and save the results in a file `ou
 
 To generate the plots again run the following command:
 ```
-cd tests/hotel/generator
+cd <tool-folder>/tests/hotel/generator
 python3 generate_plots.py
 ```
 
@@ -106,13 +108,13 @@ This will create .jpg plot files corresponding to the data in output.csv.
 If you want to generate again the benchmark, from the main folder execute:
 
 ```
-cd tests/hotel/generator
+cd <tool-folder>/tests/hotel/generator
 python3  benchmark_generator.py
 ```
 
 This generates new files, the script uses a random number generator for creating actions probabilities, that is, the files generated could be different from the one provided in the distribution.
 
-All generated files will appear in the folder: `tests/hotel/benchmark/`.
+All generated files will appear in the folder: `<tool-folder>/tests/hotel/benchmark/`.
 
 
 ##  Fire emergency example
@@ -122,7 +124,7 @@ This is another example described in the paper:
 *How Lucky Are You to Know Your Way? A Probabilistic Approach to Knowing How Logics
 Pablo Castro, Pedro R. D'Argenio and Raul Fervari. KR 2025.*
 
-the specification for this example can be found in folder ```tests/fire-emergency/```.
+the specification for this example can be found in folder ```<tool-folder>/tests/fire-emergency/```.
 
 # The specification file
 
@@ -153,7 +155,7 @@ endproperty
 By default the tool infers the alphabet from the regular expressions. For instance, in the example above the alphabet deducted from the regular expressions is {a,b}. You can override this manually:
 
 ```
-python src/akr.py -i mymodel.kr -a a,b,c
+python <tool-folder>/src/akr.py -i mymodel.kr -a a,b,c
 ```
 
 It verifies the specification in file mymodel.kr assuming alphabet {a,b,c}. Note that the used alphabet may have an impact in the verification.
