@@ -16,7 +16,7 @@ if __name__ == "__main__" :
             if mode == "canyengue" :
                 row["k"] = instance[3]
             instance_path = os.path.join(f"../benchmark/{mode}", file)
-            print(f"Ejecutando: python -i akr.py {instance_path}")
+            print(f"Running: python -i akr.py {instance_path}")
             try :
                 output = subprocess.run(["python3", "../../../src/akr.py", "-i", instance_path], capture_output=True).stdout.decode()
                 lines = output.splitlines()
@@ -30,7 +30,7 @@ if __name__ == "__main__" :
                     elif line.startswith("The property is:") :
                         row["result"] = line.split()[3]
             except Exception as e:
-                print(f'Error ejecutando {instance_path}:'+str(e))
+                print(f'Error running: {instance_path}:'+str(e))
             result.append(row)
 
     fieldnames = result[0].keys()

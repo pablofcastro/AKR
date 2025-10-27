@@ -40,7 +40,7 @@ unzip artifact.zip
 
 this will create the folder `AKR-artifact/` where the sources and executables for the tool are located.
 
-***In the following steps, we assume `<tool-folder> = /path/to/AKR-artifact` is the folder where the tool is located***
+***In the following steps, it is assumed that `<tool-folder> = /path/to/AKR-artifact` is the folder where the tool is located***
 
 
 ## 3. Run the *install.sh*
@@ -103,7 +103,7 @@ python3 generate_plots.py
 
 This will create .jpg plot files corresponding to the data in output.csv.
 
-## Generating all the benchmark again
+## Generating the benchmark again
 
 If you want to generate again the benchmark, from the main folder execute:
 
