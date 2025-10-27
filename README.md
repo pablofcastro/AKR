@@ -17,6 +17,9 @@ Kh(A,B) >= Q
 
 Intuitively, it says that an agent knows how to satisfy B from A, given a  perception captured by means of a collection of regular expressions.
 
+The tool is distributed under ***GNU General Public License v3.0***
+
+
 # Installing the tool in TACAS Virtual Machine
 
 The tool can be installed in the TACAS Virtual Machine (running in  an Intel/AMD 64 bit or an ARM 64 bit processor) all the dependecies are incluided in the given .zip file:
@@ -73,7 +76,7 @@ For example, to test the tool execute (from the src folder):
 
 ```
 cd <tool-folder>/src/
-python akr.py -i ../tests/hotel/example-fig-4.kr 
+python3 akr.py -i ../tests/hotel/example-fig-4.kr 
 ```
 
 This model checks the specification of `example-fig-4.kr` and outputs the results of the verification as shown in the Figure 4 of the paper.
@@ -81,6 +84,14 @@ This model checks the specification of `example-fig-4.kr` and outputs the result
 ## Running the benchmark
 
 The files of the benchmark presented in the paper are located in the folder `tests/hotel/benchmark`.
+
+You can execute a subset of the benchmark with the following commands:
+
+```
+cd <tool-folder>/tests/hotel/generator
+python3 evaluate_benchmark_subset.py
+```
+The results are saved in a file `output.csv`.
 
 To run the tool over the benchmark and replicate the results you have to execute the script `evaluate_benchmark.py` located in folder 
 `tests/hotel/generator`. More precisely, from the main tool folder you have to execute the following commands:
