@@ -33,9 +33,7 @@ To install the tool in the TACAS virtual Machine proceed as follows
 
 ## 1. Download the .zip file from Zenodo
 
-A .zip file containing the tool can be downloaded from:
-
-
+A .zip file containing the tool can be downloaded from Zenodo or github: https://github.com/pablofcastro/AKR/archive/refs/heads/artifact.zip
 
 ## 2. Unzip the file
 
