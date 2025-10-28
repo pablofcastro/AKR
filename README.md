@@ -29,7 +29,7 @@ The tool can be installed in the TACAS Virtual Machine (running in  an Intel/AMD
 
 The tool is entirely written in Python, the TACAS virtual Machine already has a Python interpreter installed.
 
-To install the tool in the TACAS virtual Machine proceed as follows
+To install the tool in the TACAS virtual Machine proceed as follows.
 
 ## 1. Download the .zip file from Zenodo
 
@@ -85,7 +85,7 @@ This model checks the specification of `example-fig-4.kr` and outputs the result
 
 ## Running the benchmark
 
-The files of the benchmark presented in the paper are located in the folder `tests/hotel/benchmark`.
+The files of the benchmark presented in the paper are located in the folder `<tool-folder>/tests/hotel/benchmark`.
 
 You can execute a subset of the benchmark with the following commands:
 
@@ -96,7 +96,7 @@ python3 evaluate_benchmark_subset.py
 The results are saved in a file `output.csv`.
 
 To run the tool over the benchmark and replicate the results you have to execute the script `evaluate_benchmark.py` located in folder 
-`tests/hotel/generator`. More precisely, from the main tool folder you have to execute the following commands:
+`<tool-folder>/tests/hotel/generator`. More precisely, from the main tool folder you have to execute the following commands:
 
 ```
 cd <tool-folder>/tests/hotel/generator
